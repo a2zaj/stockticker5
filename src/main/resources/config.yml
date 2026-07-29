@@ -1,0 +1,49 @@
+# Get a free API key at https://finnhub.io/register
+api-key: "YOUR_FINNHUB_API_KEY"
+
+# Optional: use multiple Finnhub keys instead of the single one above. Requests are
+# round-robin'd across every key listed here, one key per ticker per refresh cycle,
+# so your effective rate limit scales with how many keys you add (e.g. 3 free-tier
+# keys ~= 180 calls/minute instead of 60). Each key needs its own free Finnhub
+# account/email signup — a single account can't just generate several keys.
+# If this list has any entries, `api-key` above is ignored.
+api-keys: []
+#  - "YOUR_FIRST_KEY"
+#  - "YOUR_SECOND_KEY"
+#  - "YOUR_THIRD_KEY"
+
+# How often to refresh prices, in seconds. Keep this >= 20 to stay well within
+# Finnhub's free-tier rate limit (60 calls/minute per key), especially if you add
+# more tickers. With multiple keys in api-keys above, this limit is effectively
+# multiplied by the number of keys.
+refresh-seconds: 30
+
+# If a ticker's data is older than this many seconds, signs/displays/tapes show
+# "no data" instead of silently freezing on the last successful price. This catches
+# cases where a provider (especially Yahoo's unofficial futures endpoint, which can
+# get rate-limited/blocked without warning) stops responding but the plugin doesn't
+# crash — without this, a stuck display would look "live" even though it stopped
+# updating. Should be a few multiples of refresh-seconds.
+stale-after-seconds: 120
+
+# How many server ticks (1/20 second each) between each scroll step of a
+# /stockdisplay tape. Lower = faster scroll, higher = slower. This is independent
+# of refresh-seconds above — scrolling doesn't use up API calls, it just re-renders
+# text already fetched.
+tape-scroll-ticks: 4
+
+# Whether to show the always-on sidebar scoreboard of tickers. Off by default —
+# stock signs work independently of this and don't need it enabled.
+enable-scoreboard: false
+
+# Tickers to track and display on the scoreboard (only used if enable-scoreboard: true above).
+# Stock signs placed in-world track their own tickers separately and don't need
+# to be listed here.
+tickers:
+  - "AAPL"
+  - "MSFT"
+  - "TSLA"
+  - "NVDA"
+
+# Scoreboard sidebar title (color codes with '&' are supported)
+scoreboard-title: "&a&lStock Ticker"
